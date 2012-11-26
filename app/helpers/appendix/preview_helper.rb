@@ -1,0 +1,2 @@
+module Appendix::PreviewHelper
+end

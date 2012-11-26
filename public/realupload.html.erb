@@ -1,0 +1,5 @@
+	    <br>
+	    <%=form_tag({:controller => 'appendix', :action=>'mercurysave'},:multipart=>true)%>
+		<%=file_field("file","file")%>
+		<br>
+		<%=submit_tag("upload")%>

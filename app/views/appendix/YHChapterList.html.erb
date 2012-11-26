@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD id=Head1><TITLE>模板</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8"><LINK 
+href="/YHChannelApply.files/Style.css" type=text/css rel=stylesheet><LINK 
+href="/YHChannelApply.files/Manage.css" type=text/css rel=stylesheet>
+<SCRIPT language=javascript src="/YHChannelApply.files/FrameDiv.js"></SCRIPT>
+
+<SCRIPT language=javascript src="/YHChannelApply.files/Common.js"></SCRIPT>
+
+<SCRIPT language=javascript>
+        function selectallbox()
+        {
+            var list = document.getElementsByName('setlist');
+            var listAllValue='';
+             if(document.getElementById('checkAll').checked)
+             {
+                  for(var i=0;i<list.length;i++)
+                  {
+                    list[i].checked = true;
+                    if(listAllValue=='')
+                        listAllValue=list[i].value;
+                    else
+                        listAllValue = listAllValue + ',' + list[i].value;
+                  }
+                  document.getElementById('boxListValue').value=listAllValue;
+             }
+             else 
+             {
+                  for(var i=0;i<list.length;i++)
+                  {
+                    list[i].checked = false;
+                  }
+                  document.getElementById('boxListValue').value='';
+             }
+         } 
+    </SCRIPT>
+
+<META content="MSHTML 6.00.2900.3492" name=GENERATOR></HEAD>
+<BODY bgcolor = "#2a8dc8">
+<FORM id=form1 name=form1 
+action=YHChannelApply.aspx?pages=4&amp;item=&amp;client=&amp;flag=0&amp;start=&amp;end=&amp;channel= 
+method=post>
+<SCRIPT type=text/javascript>
+//<![CDATA[
+var theForm = document.forms['form1'];
+if (!theForm) {
+    theForm = document.form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</SCRIPT>
+
+<TABLE cellSpacing=0 cellPadding=0 width="98%" border=0>
+  <TBODY>
+  <TR>
+    <TD width=15><IMG src="/YHChannelApply.files/new_019.jpg" border=0></TD>
+    <TD width="100%" background=/YHChannelApply.files/new_020.jpg height=20></TD>
+    <TD width=15><IMG src="/YHChannelApply.files/new_021.jpg" 
+  border=0></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="98%" border=0>
+  <TBODY>
+  <TR>
+    <TD width=15 background=/YHChannelApply.files/new_022.jpg><IMG 
+      src="/YHChannelApply.files/new_022.jpg" border=0> </TD>
+    <TD vAlign=top width="100%" bgColor=#ffffff>
+      <TABLE cellSpacing=0 cellPadding=5 width="100%" border=0>
+        <TR>
+          <TD class=manageHead>当前位置：图书管理中心 &gt; 章节列表</TD></TR>
+        <TR>
+          <TD height=2></TD></TR></TABLE>
+      <TABLE borderColor=#cccccc cellSpacing=0 cellPadding=0 width="100%" 
+      align=center border=0>
+        <TBODY>
+        <TR>
+          <TD>
+            <TABLE id=grid 
+            style="BORDER-TOP-WIDTH: 0px; FONT-WEIGHT: normal; BORDER-LEFT-WIDTH: 0px; BORDER-LEFT-COLOR: #cccccc; BORDER-BOTTOM-WIDTH: 0px; BORDER-BOTTOM-COLOR: #cccccc; WIDTH: 100%; BORDER-TOP-COLOR: #cccccc; FONT-STYLE: normal; BACKGROUND-COLOR: #cccccc; BORDER-RIGHT-WIDTH: 0px; TEXT-DECORATION: none; BORDER-RIGHT-COLOR: #cccccc" 
+            cellSpacing=1 cellPadding=2 rules=all border=0>
+              <TBODY>
+              <TR 
+              style="FONT-WEIGHT: bold; FONT-STYLE: normal; BACKGROUND-COLOR: #eeeeee; TEXT-DECORATION: none">
+                <TD>章节名称</TD>
+                <TD>章节状态</TD>
+                <TD>操作</TD></TR>
+
+              <% @chapters.each do |chapter| %>
+                <% if chapter != "." && chapter != ".." && chapter.index(".txt") == nil %>
+
+                <TR style="FONT-WEIGHT: normal; FONT-STYLE: normal; BACKGROUND-COLOR: white; TEXT-DECORATION: none">
+                  <TD><%= chapter %></TD>
+                  <TD><IMG alt=待转换 src="/YHChannelApply.files/start.gif" border=0> </TD>
+                  <TD>
+                      <%= link_to "查看", {:action => "YHListContents", :chapter => chapter, :bookname => @bookname}  %>
+                      <%= link_to "删除", {:action => "deletefolder", :chapter => chapter, :bookname => @bookname}  %> 
+                  </TD>
+                </TR>
+                  <% end %>
+              <% end %>
+
+              </TD>
+            </TR>
+          </TBODY>
+        </TABLE>
+      </TD>
+    </TR>
+    </TBODY></TABLE>
+
+</FORM></BODY></HTML>

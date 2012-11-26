@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>居中div演示效果</title>
+<style type="text/css">
+.align-center{
+	margin:0;
+	width:500px;		
+}
+.ipad-center{
+	margin:0;
+	width:500px;
+	border-style:double		
+}
+</style>
+</head>
+<body>
+<div class="align-center" >
+	  <br>
+	  	<%= link_to "编辑", "/editor" + request.path, id: "edit_link", data: {save_url: mercury_update_appendix_preview_path(@page)} %>
+
+		<%= link_to "上一页", appendix_preview_path(@prevpath + ".html"), id: "prew_page" %> 
+	  	<%= link_to "下一页", appendix_preview_path(@nextpath + ".html"), id: "next_page" %>
+
+	  </br>
+	  <br/>
+	  <br/>
+  <div class="ipad-center" id="page_content" data-mercury="full" style="width:568px">
+  	<%= raw @page.detail %>
+  </div>
+
+</div>
+</body>
+</html>

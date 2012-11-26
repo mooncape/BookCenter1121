@@ -1,0 +1,26 @@
+		FileUtils.mv $bookpath + '/' + params[:book], $convertSrcDir + '/' + params[:book] 
+
+
+		#FileUtils.rm_r Rails.root.to_s + "/public/books/" + params[:book]
+		@bookdir = params[:book].delete(".doc")
+		@destdir = Rails.root.to_s + "/public/books/" + Iconv.conv("gbk", "utf-8", @bookdir)
+
+		if File.directory?@destdir
+			FileUtils.mv $convertSrcDir + '/' + params[:book], $bookpath + '/' + params[:book]
+			respond_to do |format|
+      		format.html { redirect_to "/appendix/YHList"}
+      		format.json { head :no_content }
+
+      		FileUtils.rm_r $convertSrcDir
+      		end
+			return
+		end
+		Dir.mkdir @destdir
+		system $exepath + "ProjectCom1.2.exe " + $convertSrcDir + " " + Rails.root.to_s + "/public/books/"+ Iconv.conv("gbk", "utf-8", @bookdir)
+    	
+    	respond_to do |format|
+      	format.html { redirect_to "/appendix/YHList"}
+      	format.json { head :no_content }
+
+      	FileUtils.rm_r $convertSrcDir
+		end
