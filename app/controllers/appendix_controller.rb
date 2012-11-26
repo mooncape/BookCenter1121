@@ -38,7 +38,7 @@ class AppendixController < ApplicationController
 		@chapters = Dir.new($convertDestDir + "/" + params[:book])
 	end
 
-	def YHListContents
+	def YHListContents   
 		@book = $convertDestDir + '/' + params[:bookname] + "/" + params[:chapter]
 		@bookname = params[:bookname] + "@^@" + params[:chapter]
 		@contents = Dir.new(@book)
