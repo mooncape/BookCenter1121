@@ -1,2 +1,8 @@
 1. when you first download the project, run 'bundle install' to add the missing Gem.
-2.
+2. you can visit http://localhost:3000/signup to register a new user
+3. and visit http://localhost:3000/signin to sign in 
+4. then you can use the sessin info in the development. you can see the example line I add in YHList.html.erb line 86:
+  the var 'current_user' is an object contain the current session, like 
+  current_user[:id] is the item id in database(primary key)
+  current_user[:name] is user name(you can chang the code to see the effect)
+5. I think you can use the user id(current_user[:id]) or email(current_user[:email]) to do book select.
