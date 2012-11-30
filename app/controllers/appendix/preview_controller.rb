@@ -7,13 +7,14 @@ class Appendix::PreviewController < ApplicationController
   def show
   	@page = Test.find_by_title("03doc-03htm")
 
+    @changedpath = params[:id]
     params[:id]=  params[:id].gsub("@^@", "/")
 
     @bookpath =  params[:id].gsub("^@^", "/")
-    @changedpath = params[:id]
+    @tempath = params[:id]
 
-    @bookname = params[:id].gsub("^@^", "/")[0, @changedpath.index("^@^")]
-
+    @bookname = params[:id].gsub("^@^", "/")[0, @tempath.index("^@^")]
+    #@bookname = Iconv.conv("gbk", "utf-8", @bookname)
     #处理上一页与下一页
     pagenumber = @changedpath[-6, 6].to_i
 
@@ -30,7 +31,6 @@ class Appendix::PreviewController < ApplicationController
     buffer = buffer.gsub("href=\"", "href=\"/books/" + @bookname + "/")
     buffer = buffer.gsub("src=\"", "src=\"/books/" + @bookname + "/")
 
-
     @page.detail = buffer
     file.close
     end
@@ -41,16 +41,18 @@ class Appendix::PreviewController < ApplicationController
     require 'FileUtils' 
 
     page = Test.find_by_title(params[:id])
-    
+
+    params[:id] = params[:id].gsub("@^@", "/")
     @bookpath =  Iconv.conv("gb2312", "utf-8", params[:id].gsub("^@^", "/"))
+
+    
     File.open(Rails.root.to_s + "/" +$convertDestDir + "/" + @bookpath + "." + params[:format], "w") do |file|
 
-
-    @bookpath =  Iconv.conv("gbk", "utf-8", params[:id].gsub("^@^", "/"))
     @changedpath = Iconv.conv("gbk", "utf-8", params[:id])
     @bookname = @bookpath[0, @changedpath.index("^@^")]
 
-    
+    printlog(@bookname)
+
     buffer = params[:content][:page_content][:value]
 
     #还原原来的引用css和img的模式

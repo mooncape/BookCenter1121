@@ -85,29 +85,44 @@ class AppendixController < ApplicationController
 
 	def deletepage
 
-		File.delete(params[:page])
+		@index = params[:book].index("@^@")
+		@bookname = params[:book][0..@index-1]
+		@chapter = params[:book][@index+3..-1]
+
+
+		File.delete(Rails.root.to_s + "/" + params[:page])
 
     	respond_to do |format|
-      	format.html { redirect_to "/appendix/YHListContents?book=" + params[:book]}
+      	format.html { redirect_to "/appendix/YHListContents?bookname=" + @bookname + "&chapter=" + @chapter}
       	format.json { head :no_content }
 		end
 	end
 
 	def convert
 		require 'FileUtils' 
-		require 'win32ole'
+		require 'digest/sha1'  
 
 		if File.exist?($convertSrcDir)
 			FileUtils.rm_r $convertSrcDir
 		end
 
+
 		Dir.mkdir $convertSrcDir
 		FileUtils.mv $bookpath + '/' + params[:book], $convertSrcDir + '/' + params[:book] 
 
 
-		#FileUtils.rm_r Rails.root.to_s + "/public/books/" + params[:book]
-		@bookdir = params[:book].delete(".rar")
-		@destdir = Rails.root.to_s + "/public/books/" + Iconv.conv("gbk", "utf-8", @bookdir)
+		#解压缩书籍文件
+		system $exepath + "WinRAR.exe x \"" + ($convertSrcDir + '/' + Iconv.conv("gbk", "utf-8", params[:book])) +"\" \"" + $convertSrcDir + "\""
+
+		#将书籍文件中的空格转换为"_"
+		if params[:book].index(" ") != nil
+			@bookdir = params[:book].gsub(".rar", "").gsub(" ", "_")
+			printlog($convertSrcDir + "/" + params[:book].gsub(".rar", "") + "    " +$convertSrcDir + "/" + @bookdir);
+			FileUtils.mv $convertSrcDir + "/" + params[:book].gsub(".rar", ""), $convertSrcDir + "/" + @bookdir
+		else
+			@bookdir = params[:book].gsub(".rar", "")
+		end
+		@destdir = (Rails.root.to_s + "/public/books/" + Digest::SHA1.hexdigest(@bookdir))
 
 		if File.directory?@destdir
 			FileUtils.mv $convertSrcDir + '/' + params[:book], $bookpath + '/' + params[:book]
@@ -120,12 +135,15 @@ class AppendixController < ApplicationController
 			return
 		end
 
-		printlog($exepath + "ProjectCom1.2.exe " + $convertSrcDir + '/' + Iconv.conv("gbk", "utf-8", @bookdir) + " " + @destdir)
-		system $exepath + "WinRAR.exe x " + $convertSrcDir + '/' + Iconv.conv("gbk", "utf-8", params[:book]) +" " + $convertSrcDir
+
 
 		Dir.mkdir @destdir
 		system $exepath + "ProjectCom1.2.exe " + $convertSrcDir + '/' + Iconv.conv("gbk", "utf-8", @bookdir) + " " + @destdir
-    	
+
+    	metafile = File.new(Rails.root.to_s + "/public/books/" + Iconv.conv("gbk", "utf-8", @bookdir) + ".@@@", "w+") 
+    	metafile.puts("fyx")
+    	metafile.close
+
     	respond_to do |format|
       	format.html { redirect_to "/appendix/YHList"}
       	format.json { head :no_content }
@@ -137,12 +155,25 @@ class AppendixController < ApplicationController
 	def deletefolder
 
 		require 'FileUtils'
+
 		FileUtils.rm_r $convertDestDir + '/' + params[:book]
+		FileUtils.rm_rf($convertDestDir + '/' + params[:bookname])
 
     	respond_to do |format|
       	format.html { redirect_to "/appendix/YHConvertedList"}
       	format.json { head :no_content }
 		end
+	end
+
+	def deletechapter
+		require 'FileUtils'
+
+		FileUtils.rm_r $convertDestDir + '/' + params[:bookname] + "/" + params[:chapter]
+
+		respond_to do |format|
+      	format.html { redirect_to "/appendix/YHChapterList?book=" + params[:bookname]}
+      	format.json { head :no_content }
+      end
 	end
 
 end

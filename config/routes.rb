@@ -44,6 +44,7 @@ Demo::Application.routes.draw do
   get "appendix/delete"
   get "appendix/deletefolder"
   get "appendix/deletepage"
+  get "appendix/deletechapter"
   get "appendix/convert"
   get "appendix/download"
 

@@ -97,7 +97,7 @@ function __doPostBack(eventTarget, eventArgument) {
                   <TD><IMG alt=待转换 src="/YHChannelApply.files/start.gif" border=0> </TD>
                   <TD>
                       <%= link_to "查看", {:action => "YHListContents", :chapter => chapter, :bookname => @bookname}  %>
-                      <%= link_to "删除", {:action => "deletefolder", :chapter => chapter, :bookname => @bookname}  %> 
+                      <%= link_to "删除", {:action => "deletechapter", :chapter => chapter, :bookname => @bookname}  %> 
                   </TD>
                 </TR>
                   <% end %>

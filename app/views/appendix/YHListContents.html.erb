@@ -87,14 +87,18 @@ function __doPostBack(eventTarget, eventArgument) {
               style="FONT-WEIGHT: bold; FONT-STYLE: normal; BACKGROUND-COLOR: #eeeeee; TEXT-DECORATION: none">
                 <TD>页面</TD>
                 <TD>状态</TD>
+                <TD>最后修改时间</TD>
                 <TD>操作</TD></TR>
 
               <% @contents.each do |content| %>
                 <% if content.index("_1") != nil %>
+                <% @dir = File.new(Rails.root.to_s + "/" + @book + '/' + content, "r") %>
 
                 <TR style="FONT-WEIGHT: normal; FONT-STYLE: normal; BACKGROUND-COLOR: white; TEXT-DECORATION: none">
                   <TD><%= content %></TD>
                   <TD><IMG alt=待转换 src="/YHChannelApply.files/start.gif" border=0> </TD>
+                  <TD><%= @dir.mtime.to_s[0..-6] %></TD>
+                      <%= @dir.close %>
                   <TD>
                       <%= link_to "预览", appendix_preview_path(@bookname + '^@^' + content), {:target => "_blank"} %>
                       <%= link_to "删除", {:action => "deletepage", :page => @book + '/' + content, :book => @bookname}  %> 

@@ -87,18 +87,24 @@ function __doPostBack(eventTarget, eventArgument) {
               style="FONT-WEIGHT: bold; FONT-STYLE: normal; BACKGROUND-COLOR: #eeeeee; TEXT-DECORATION: none">
                 <TD>图书名称名</TD>
                 <TD>图书状态</TD>
+                <TD>转换时间</TD>
+                <TD>转换者ID</TD>
                 <TD>操作</TD></TR>
 
               <% @books.each do |book| %>
-                <% if book != "." && book != ".." %>
+                <% if book != "." && book != ".." && book.index(".@@@") != nil %>
+                <% @dir = File.new(Rails.root.to_s + "/" +$convertDestDir + "/" + book, "r") %>
 
                 <TR style="FONT-WEIGHT: normal; FONT-STYLE: normal; BACKGROUND-COLOR: white; TEXT-DECORATION: none">
-                  <TD><%= book %></TD>
+                  <TD><%= book.gsub(".@@@", "") %></TD>
                   <TD><IMG alt=待转换 src="/YHChannelApply.files/start.gif" border=0> </TD>
+                  <TD><%= @dir.ctime.to_s[0..-6] %></TD>
+                  <TD><%= @dir.readlines.to_s[2..-5] %></TD>
+                      <%= @dir.close %>
                   <TD>
-                      <%= link_to "查看", {:action => "YHChapterList", :book => book}  %>
-                      <%= link_to "下载", {:action =>"download", :book => book} %>  
-                      <%= link_to "删除", {:action => "deletefolder", :book => book}  %> 
+                      <%= link_to "查看", {:action => "YHChapterList", :book => Digest::SHA1.hexdigest(book.gsub(".@@@", ""))}  %>
+                      <%= link_to "下载", {:action =>"download", :book => Digest::SHA1.hexdigest(book.gsub(".@@@", ""))} %>  
+                      <%= link_to "删除", {:action => "deletefolder", :book => Digest::SHA1.hexdigest(book.gsub(".@@@", "")), :bookname => book}  %> 
                   </TD>
                 </TR>
                   <% end %>
