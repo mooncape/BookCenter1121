@@ -38,3 +38,6 @@ gem 'mercury-rails', '0.8.0', :path => './lib/mercury-rails-0.8.0'
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 gem 'paperclip'
+
+gem 'bcrypt-ruby', '3.0.1'
+gem 'bootstrap-sass', '2.1'

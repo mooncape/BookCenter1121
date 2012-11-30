@@ -1,8 +1,9 @@
 #encoding:utf-8
 class ApplicationController < ActionController::Base
+  include SessionsHelper
   protect_from_forgery
 
-      $bookpath = "G:/books";
+      $bookpath = "D:/books";
       $convertSrcDir = "G:/SrcDir"
       $convertDestDir = "public/books"
 

@@ -1,6 +1,5 @@
 Demo::Application.routes.draw do
 
-
   get "preview/show"
 
     namespace :mercury do
@@ -53,7 +52,13 @@ Demo::Application.routes.draw do
   get "appendix/preview/prevpage"
   get "appendix/preview/nextpage"
 
+  #user controll
+  resources :users
+  resources :sessions, only: [:new, :create, :destroy]
 
+  match '/signup',  to: 'users#new'
+  match '/signin',  to: 'sessions#new'
+  match '/signout', to: 'sessions#destroy', via: :delete
 
   # See how all your routes lay out with "rake routes"
 

@@ -16,3 +16,4 @@
 /public/books
 /public/videos
 /public/system
+/app/controllers/application_controller.rb
