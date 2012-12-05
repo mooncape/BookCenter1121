@@ -1,4 +1,5 @@
 1. when you first download the project, run 'bundle install' to add the missing Gem.
+1.1 run 'bundle exec rake db:migrate',to generate sql file
 2. you can visit http://localhost:3000/signup to register a new user
 3. and visit http://localhost:3000/signin to sign in 
 4. then you can use the sessin info in the development. you can see the example line I add in YHList.html.erb line 86:
